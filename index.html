@@ -6,6 +6,11 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+    <style>
+      .ng-valid.ng-dirty { border-color: green; }
+      .ng-invalid.ng-dirty { border-color: red; }
+    </style>
   </head>
 
   <body ng-controller="StoreController as store">
@@ -48,24 +53,43 @@
                 <cite>by: {{review.author}}</cite>
               </blockquote>
 
-              <form action="" name="reviewForm" ng-controller="ReviewController as reviewCtrl">
+              <form name="reviewForm"
+              ng-controller="ReviewController as reviewCtrl"
+              ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
                 <blockquote>
-                  <b>Stars: {{review.stars}}</b>
-                  {{review.body}}
-                  <cite>by: {{review.author}}</cite>
+                  <b>Stars: {{reviewCtrl.review.stars}}</b>
+                  {{reviewCtrl.review.body}}
+                  <cite>by: {{reviewCtrl.review.author}}</cite>
                 </blockquote>
 
-                <select ng-model="review.stars" class="form-control">
-                  <option value="">- Rate the product -</option>
-                  <option value="1">1 star</option>
-                  <option value="2">1 stars</option>
-                </select>
-                <textarea ng-model="review.body" class="form-control"></textarea>
-                <label for="">by:</label>
-                <input ng-model="review.author" type="email" class="form-control">
+                <div class="form-group">
+                  <select ng-model="reviewCtrl.review.stars" class="form-control" required>
+                    <option value="">- Rate the product -</option>
+                    <option value="1">1 star</option>
+                    <option value="2">2 stars</option>
+                    <option value="3">3 stars</option>
+                    <option value="4">4 stars</option>
+                  </select>
+                </div>
 
-                <input ng-model="review.terms" type="checkbox"> I agree to the terms
-                <input type="submit" value="Submit" class="btn btn-primary">
+                <div class="form-group">
+                  <textarea ng-model="reviewCtrl.review.body" class="form-control" required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="">by:</label>
+                  <input ng-model="reviewCtrl.review.author" type="email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <input ng-model="reviewCtrl.review.terms" type="checkbox" required> I agree to the terms<br>
+                </div>
+
+                <div class="flash-message form-validation">reviewForm is {{reviewForm.$valid}}</div>
+
+                <div class="form-group">
+                  <input type="submit" value="Submit" class="btn btn-primary">
+                </div>
               </form>
             </div>
           </section>
